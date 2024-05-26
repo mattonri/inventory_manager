@@ -57,6 +57,7 @@ def generate_table(cur):
                 (103071,'Catan: 5th Edition', 43.97),
                 (104083,'Wooden Chess Set', 13.99),
                 (105094,'Ticket to Ride', 49.99),
+                (105021,'Checkers', 5.99),
                 (106105,'Pandemic', 39.99)''')
         cur.execute('''INSERT INTO discount (discount_code, discount_amount, discount_type_id, product_id) VALUES 
                 (478,50,1,103071),

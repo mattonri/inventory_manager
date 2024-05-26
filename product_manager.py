@@ -18,16 +18,16 @@ def main():
         drop_table(cur)
         generate_table(cur)
         con.commit()
-    
-    catan = item(103071, cur)
+    print()
+    view_products(cur)
+    add_product(cur)
+    view_products(cur)
+
     # menu(cur, con)
     con.close()
 
 
 def menu(cur, con):
-    # Insert a row of data
-    cur.execute("INSERT INTO stocks VALUES ('2006-01-05','BUY','RHAT',100,35.14)")
-
     # Save (commit) the changes
     con.commit()
 
@@ -56,81 +56,80 @@ def menu(cur, con):
         elif action == 3:
             remove_products(cur)
             con.commit()
-        elif action == 4:
-            see_discounts(cur)
-            con.commit()
-        elif action == 5:
-            add_discounts(cur)
-            con.commit()
-        elif action == 6:
-            delete_discounts(cur)
-            con.commit()
 
     print("Thank you. Goodbye.")
 
-class item:
-     def __init__(self, id_number, cur):
+class product:
+    def __init__(self, id_number, cur):
         self.id_number = id_number
         cur.execute(f'''
             SELECT * 
             FROM product 
-            JOIN discount ON product.product_id = discount.product_id
-            JOIN discount_type ON discount.discount_type_id = discount_type.discount_type_id
+            LEFT JOIN discount ON product.product_id = discount.product_id
+            LEFT JOIN discount_type ON discount.discount_type_id = discount_type.discount_type_id
             WHERE product.product_id LIKE '{id_number}'
         ''')
         data = cur.fetchall()
-        print(data)
+        # print(data)
+        # Take it out of the list
+        data = data[0]
         self.name = data[1]
         self.price = data[2]
-        self.discount_code = data[3]
-        self.discount_type = data[8]
-        self.discount_amount = data[4]
+        if len(data) > 3:
+            self.discount_code = data[3]
+            self.discount_type = data[8]
+            self.discount_amount = data[4]
+            self.discount_type_code = data[5]
 
+    # # For this project I implemented this a different way, but in the future I might add a new way to create the product object and use this to add it to the database
+    # def register_product(self, cur):
+    #     cur.execute(f'''INSERT INTO product (product_id, product_name, product_price) VALUES 
+    #             ({self.id_number},'{self.name}', {self.price})''')
+    #     if not self.discount_code == "":
+    #         cur.execute(f'''INSERT INTO discount (discount_code, discount_amount, discount_type_id, product_id) VALUES 
+    #                 ({self.discount_code},{self.discount_amount},{self.discount_type_code},{self.id_number})''')
+    #         if not self.discount_type_code == "":
+    #             cur.execute(f'''INSERT INTO discount_type (discount_type_id, discount_type_name) VALUES 
+    #                     ({self.discount_type_code},'{self.discount_type}')''')
+    
+    def __str__(self):
+        return f"ID:{self.id_number} \tName:{self.name} \tPrice:{self.price} \tDiscount Code:{self.discount_code} \tDiscount Type:{self.discount_type} \tDiscount Amount:{self.discount_amount}"
+    
 
 def add_product(cur):
-    new_item = input("What item would you like to add? ")
-    new_price = float(input(f"What is the price of '{new_item}'? "))
-    cur.append((new_price, new_item))
-    print(f"'{new_item}' has been added to the cart.")
+    product_id = input("What is the ID of the product that you would like to add? (Usually a 6 digit number)")
+    product_name = input("What is the name of the product that you would like to add?")
+    product_price = input("What is the price of the product that you would like to add?")
+    cur.execute(f'''INSERT INTO product (product_id, product_name, product_price) VALUES 
+        ({product_id},'{product_name}', {product_price})''')
 
 
 def view_products(cur):
-    print(f"")
-            cur.execute(f'''
-            SELECT * 
-            FROM product 
-            JOIN discount ON product.product_id = discount.product_id
-            JOIN discount_type ON discount.discount_type_id = discount_type.discount_type_id
-            WHERE product.product_id LIKE '{id_number}'
-        ''')
-        data = cur.fetchall()
-        print(data)
+    print(f"Currently Registered Products:")
+    cur.execute(f'''
+        SELECT product_id 
+        FROM product 
+    ''')
+    product_id_rows = cur.fetchall()
+    for product_id in product_id_rows:
+        iterate_product = product(product_id[0], cur)
+        print(iterate_product)
     
 
 
 
 def remove_products(cur):
-    remove_i = (int(input("Which item would you like to remove? ")) - 1)
-    if remove_i >= 0 and remove_i <= len(cur):
-        cur.pop(remove_i)
-        print("Item removed.")
-    else:
-         print("Sorry, that is not a valid item number.")
-
-
-def see_discounts(cur):
-    total = 0
-    for item in cur:
-        total += item[0]
-    print(f"The total price of the items in the shopping cart is ${total:.2f}")
-
-def add_discounts(cur):
-    cur.sort()
-    print("Cart sorted!")
-    # view_cart(shopping_cart)
-
-def delete_discounts(cur):
-    pass
+    print("Here are all of the current products:")
+    view_products(cur)
+    try:
+        remove_id = input("What is the product ID of the item you would like to remove?")
+        cur.execute(f'''
+            DELETE FROM product
+            WHERE product_id = {remove_id}
+        ''')
+    except sqlite3.Error as e:
+        print(f"An SQLite error occurred: {e}")
+    
 
 if __name__ == "__main__":
      main()
