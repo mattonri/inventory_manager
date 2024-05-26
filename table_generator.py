@@ -78,7 +78,3 @@ def generate_table(cur):
         print(f"An I/O error occurred: {e}")
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-    finally:
-        # Ensure the connection is closed even if an error occurs
-        if 'cur' in locals():
-            cur.close()

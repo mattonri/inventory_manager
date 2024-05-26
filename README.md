@@ -2,7 +2,7 @@
 
 This program is a product manager for board games. It uses an SQL relational database to handle products with a variety of different discounts applied to them. It functions fully in the command line and it has a few functions in product_manager to generate the database in case the file is lost or if you need to delete it, it will set it back the way that it was. I wrote it to learn sqlite better and brush up on python classes. 
 
-[Software Demo Video](http://youtube.link.goes.here)
+[Software Demo Video](https://youtu.be/05biDrqaJXM)
 
 # Relational Database
 
