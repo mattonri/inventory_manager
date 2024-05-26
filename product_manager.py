@@ -19,11 +19,7 @@ def main():
         generate_table(cur)
         con.commit()
     print()
-    view_products(cur)
-    add_product(cur)
-    view_products(cur)
-
-    # menu(cur, con)
+    menu(cur, con)
     con.close()
 
 
@@ -34,17 +30,14 @@ def menu(cur, con):
     action = 0
     shopping_cart = []
     print("Welcome to the Shopping Cart Program!")
-    while action != 6:
+    while action != 4:
         print('''\nPlease select one of the following: 
         1. Add Product
         2. View Product List
         3. Remove Products
-        4. See Discounts
-        5. Add Discounts
-        6. Delete Discounts
-        7. Quit''')
+        4. Quit''')
         action = int(input("Please enter an action: "))
-        while not action in (1, 2, 3, 4, 5, 6, 7):
+        while not action in (1, 2, 3, 4):
                 print("sorry, that's not a valid input")
                 action = int(input("Please enter an action: "))
         if action == 1:
@@ -129,7 +122,6 @@ def remove_products(cur):
         ''')
     except sqlite3.Error as e:
         print(f"An SQLite error occurred: {e}")
-    
 
 if __name__ == "__main__":
      main()

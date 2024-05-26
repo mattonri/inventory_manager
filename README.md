@@ -1,38 +1,26 @@
 # Overview
 
-{Important! Do not say in this section that this is college assignment. Talk about what you are trying to accomplish as a software engineer to further your learning.}
-
-{Provide a description of the software that you wrote and how it integrates with a SQL Relational Database. Describe how to use your program.}
-
-{Describe your purpose for writing this software.}
-
-{Provide a link to your YouTube demonstration. It should be a 4-5 minute demo of the software running, a walkthrough of the code, and a view of how created the Relational Database.}
+This program is a product manager for board games. It uses an SQL relational database to handle products with a variety of different discounts applied to them. It functions fully in the command line and it has a few functions in product_manager to generate the database in case the file is lost or if you need to delete it, it will set it back the way that it was. I wrote it to learn sqlite better and brush up on python classes. 
 
 [Software Demo Video](http://youtube.link.goes.here)
 
 # Relational Database
 
-{Describe the relational database you are using.}
-
+My diagram has 3 tables. One to store the products, another to store specific discounts for specific products and one last one to store the text of the discount type (According to database best practices)
+![mysql database diagram](./Screenshot%202024-05-24%20183357.png)
 {Describe the structure (tables) of the relational database that you created.}
 
 # Development Environment
 
-{Describe the tools that you used to develop the software}
-
-{Describe the programming language that you used and any libraries.}
-
+I made a diagram of the database in mysql worbench since I had experience in it but the program itself is just made of python with the sqlite module.
 # Useful Websites
 
-{Make a list of websites that you found helpful in this project}
-
-- [Web Site Name](http://url.link.goes.here)
-- [Web Site Name](http://url.link.goes.here)
+- [Official SQLite Tutorial](https://www.sqlitetutorial.net/)
+- [Wr3 SQLite Tutorial](https://www.w3resource.com/sqlite/)
 
 # Future Work
 
-{Make a list of things that you need to fix, improve, and add in the future.}
-
-- Item 1
-- Item 2
-- Item 3
+I would add more manipulation to discounts and maybe even more tables to keep track of inventory (as the program originally intended), orders and more.
+- Add and delete discounts
+- Add inventory tables
+- Add order and customer info tables
